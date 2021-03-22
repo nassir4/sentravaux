@@ -1,0 +1,99 @@
+entity Adresse {
+	region String required,
+    departement String required,
+    commune String required,
+}
+
+entity Annonce {
+	titre String required,
+	statut Boolean,
+    description String required,
+    photo1 ImageBlob required,
+    photo2 ImageBlob required,
+    photo3 ImageBlob required,
+    disponibilite String required,
+    createdAt LocalDate
+}
+entity Metier{
+	nom String required,
+    description String
+}
+// an ignored comment
+/** not an ignored comment */
+
+entity User{
+	telephone String
+}
+entity Categorie{
+	nomCategorie String required,
+    description String
+}
+entity SousCategorie{
+	nomSousCategorie String required,
+    description String
+}
+entity Produit{
+	nom String required,
+    quantite Integer required,
+    prix Integer required,
+    photo ImageBlob required,
+    createdAt LocalDate
+}
+entity Commande{
+	quantiteTotal Intetger,
+    prixTotal Integer,
+    createdAt LocalDate
+}
+entity LigneCommande{
+	quantite Integer,
+    prix Integer,
+}
+entity Livraison{
+	quartier String required,
+    dateLivraison LocalDate
+}
+/**
+ * The Employee entity.
+ */
+ relationship OneToOne{
+ 	Livraison{commande} to Commande
+ }
+ relationship ManyToOne{
+ 	LigneCommande{commande} to Commande
+ }
+
+ relationship ManyToOne{
+ 	LigneCommande{produit} to Produit
+ }
+ relationship ManyToOne{
+ 	Commande{user} to User
+ }
+
+relationship ManyToOne {
+	User{adresse} to Adresse
+}
+relationship ManyToOne{
+	User{metier} to Metier  
+}
+relationship ManyToOne{
+	Annonce{user} to User
+}
+relationship ManyToOne {
+	Categorie{sousCategorie} to SousCategorie
+}
+relationship ManyToOne {
+	SousCategorie{produit} to Produit
+}
+
+
+// Set pagination options
+paginate Logement, Paiement, Adresse with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+dto * with mapstruct
+// Set service options to all except few
+service all with serviceImpl 
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
